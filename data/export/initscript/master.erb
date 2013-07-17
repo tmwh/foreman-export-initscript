@@ -33,6 +33,10 @@ USERNAME=<%= user %>
 # and status_of_proc is working.
 [ -r /lib/lsb/init-functions ] &&. /lib/lsb/init-functions
 
+# Define log functions, not available on CentOS
+[ "`type -t log_daemon_msg`" = "function" ] || log_daemon_msg() { logger "$@"; }
+[ "`type -t log_end_msg`" = "function" ] || log_end_msg() { [ $1 -eq 0 ] && RES=OK; logger ${RES:=FAIL}; }
+
 #
 # Function that starts the daemon/service
 #
